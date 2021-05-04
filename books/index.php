@@ -79,9 +79,7 @@ class LibraryAPI{
     }
     return json_encode($books);
   }
-  function CreateBook(){
-    
-  }
+
 }
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
@@ -97,10 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 
 }
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $API = new LibraryAPI;
-  header('Content-Type: application/json');
-  echo $API->CreateBook();
-}
+
 
  ?>
