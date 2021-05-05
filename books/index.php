@@ -34,8 +34,8 @@ function GetViableParametersAndValues($possibleParameters){
 }
 class LibraryAPI{
   private $basicSelectStatement = "
-      SELECT tb_books.*, tb_bookstates.state,
-       tb_shelf.shelfdescr, tb_authors.name
+      SELECT tb_books.*,tb_bookstates.id as bookstatesid, tb_bookstates.state
+       ,tb_shelf.id as shelfid, tb_shelf.shelfdescr,tb_authors.id as authorid, tb_authors.name
       FROM `tb_books`
       INNER JOIN tb_bookstates ON tb_books.stateid=tb_bookstates.id
       INNER JOIN tb_shelf ON tb_books.shelfid=tb_shelf.id
