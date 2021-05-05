@@ -9,10 +9,10 @@ class GetStatesRoute{
     $data = $db->prepare('select * from tb_bookstates');
     $data->execute();
     while($output = $data->fetch(PDO::FETCH_ASSOC)){
-      $shelfs[$output['id']] = array(
+      array_push($shelfs,array(
         'id' => $output['id'],
         'name' => $output['state']
-      );
+      ));
     }
     return json_encode($shelfs);
   }
@@ -23,6 +23,7 @@ class GetStatesRoute{
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
   $API = new GetStatesRoute;
+  header("Access-Control-Allow-Origin: http://localhost:3000");
   header('Content-Type: application/json');
   echo $API->getAllStates();
 }
