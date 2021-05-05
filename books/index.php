@@ -49,7 +49,10 @@ class LibraryAPI{
     while($output = $data->fetch(PDO::FETCH_ASSOC)){
       array_push($users, array(
         'id' => $output['id'],
-        'title' => $output['title']
+        'title' => $output['title'],
+        'name' => $output['name'],
+        'shelfdescr' => $output['shelfdescr'],
+        'state' => $output['state'],
       ));
     }
     return json_encode($users);
