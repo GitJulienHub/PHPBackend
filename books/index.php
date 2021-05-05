@@ -43,11 +43,11 @@ class LibraryAPI{
 
   function GetAllBooks(){
     $db = new Connect;
-    $users = array();
+    $books = array();
     $data = $db->prepare($this->basicSelectStatement);
     $data->execute();
     while($output = $data->fetch()){
-      array_push($users, array(
+      array_push($books, array(
         'id' => $output['id'],
         'title' => $output['title'],
         'authorid' => $output['authorid'],
@@ -58,7 +58,7 @@ class LibraryAPI{
         'state' => $output['state'],
       ));
     }
-    return json_encode($users);
+    return json_encode($books);
   }
   function GetBooksByParameters(){
     $db = new Connect;
