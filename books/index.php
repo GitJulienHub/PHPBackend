@@ -38,7 +38,7 @@ class LibraryAPI{
        ,tb_shelf.id as shelfid, tb_shelf.shelfdescr,tb_authors.id as authorid, tb_authors.name
       FROM `tb_books`
       INNER JOIN tb_bookstates ON tb_books.stateid=tb_bookstates.id
-      INNER JOIN tb_shelf ON tb_books.shelfid=tb_shelf.id
+      LEFT OUTER JOIN tb_shelf ON tb_books.shelfid=tb_shelf.id
       INNER JOIN tb_authors ON tb_books.authorid=tb_authors.id";
 
   function GetAllBooks(){
@@ -46,7 +46,7 @@ class LibraryAPI{
     $users = array();
     $data = $db->prepare($this->basicSelectStatement);
     $data->execute();
-    while($output = $data->fetch(PDO::FETCH_ASSOC)){
+    while($output = $data->fetch()){
       array_push($users, array(
         'id' => $output['id'],
         'title' => $output['title'],

@@ -4,11 +4,11 @@ require_once __DIR__ . '../../../connectdb.php';
 
 class ShelfCreateRoute{
 
-  function CreateShelf(){
+  function CreateShelf($input){
     // TODO: error checking
     $parameterName = 'shelfdescr';
 
-    if(!isset($_POST[$parameterName]) || empty($_POST[$parameterName])){
+    if(!isset($input[$parameterName]) || empty($input[$parameterName])){
       // TODO: return error
       return;
 
@@ -18,7 +18,7 @@ class ShelfCreateRoute{
 
     $statement = "INSERT INTO tb_shelf ($parameterName) VALUES (:$parameterName)";
     $stmt = ($db->prepare($statement));
-    $stmt->bindParam($parameterName,$_POST[$parameterName], PDO::PARAM_STR);
+    $stmt->bindParam($parameterName,$input[$parameterName], PDO::PARAM_STR);
     $stmt->execute();
 
     //TODO check for errors, send code
@@ -28,7 +28,15 @@ class ShelfCreateRoute{
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   header("Access-Control-Allow-Origin: http://localhost:3000");
   $API = new ShelfCreateRoute;
-  $API->CreateShelf();
+  $API->CreateShelf($_POST);
+}
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    header("Access-Control-Allow-Origin: http://localhost:3000");
+    header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization");
+    header("Access-Control-Request-Method: GET");
+    header('Content-Type: application/json');
+    $API = new ShelfCreateRoute;
+    $API->CreateShelf($_GET);
 }
 
  ?>
