@@ -9,10 +9,10 @@ class GetAuthorsRoute{
     $data = $db->prepare('select * from tb_authors');
     $data->execute();
     while($output = $data->fetch(PDO::FETCH_ASSOC)){
-      $shelfs[$output['id']] = array(
+      array_push($shelfs, array(
         'id' => $output['id'],
         'name' => $output['name']
-      );
+      ));
     }
     return json_encode($shelfs);
   }
@@ -21,10 +21,10 @@ class GetAuthorsRoute{
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
-  $API = new GetAuthorsRoute;
   header("Access-Control-Allow-Origin: http://localhost:3000");
   header('Content-Type: application/json');
+  $API = new GetAuthorsRoute;
+
   echo $API->getAllAuthors();
 }
  ?>

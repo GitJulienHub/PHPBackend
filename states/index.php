@@ -11,7 +11,7 @@ class GetStatesRoute{
     while($output = $data->fetch(PDO::FETCH_ASSOC)){
       array_push($shelfs,array(
         'id' => $output['id'],
-        'name' => $output['state']
+        'state' => $output['state']
       ));
     }
     return json_encode($shelfs);
