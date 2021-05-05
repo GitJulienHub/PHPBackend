@@ -28,6 +28,7 @@ class AuthorCreateRoute{
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  header("Access-Control-Allow-Origin: http://localhost:3000");
   $API = new AuthorCreateRoute;
   $API->CreateAuthor();
 }
