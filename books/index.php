@@ -33,11 +33,18 @@ function GetViableParametersAndValues($possibleParameters){
   return $actualParameters;
 }
 class LibraryAPI{
+  private $basicSelectStatement = "
+      SELECT tb_books.*, tb_bookstates.state,
+       tb_shelf.shelfdescr, tb_authors.name
+      FROM `tb_books`
+      INNER JOIN tb_bookstates ON tb_books.stateid=tb_bookstates.id
+      INNER JOIN tb_shelf ON tb_books.shelfid=tb_shelf.id
+      INNER JOIN tb_authors ON tb_books.authorid=tb_authors.id";
 
   function GetAllBooks(){
     $db = new Connect;
     $users = array();
-    $data = $db->prepare('select * from tb_books');
+    $data = $db->prepare($this->basicSelectStatement);
     $data->execute();
     while($output = $data->fetch(PDO::FETCH_ASSOC)){
       array_push($users, array(
@@ -48,17 +55,6 @@ class LibraryAPI{
     return json_encode($users);
   }
   function GetBooksByParameters(){
-    $baseStatement = "
-    SELECT tb_books.*, tb_bookstates.state,
-     tb_shelf.shelfdescr, tb_authors.name
-    FROM `tb_books`
-    INNER JOIN tb_bookstates ON tb_books.stateid=tb_bookstates.id
-    INNER JOIN tb_shelf ON tb_books.shelfid=tb_shelf.id
-    INNER JOIN tb_authors ON tb_books.authorid=tb_authors.id
-
-    WHERE
-    ";
-
     $db = new Connect;
 
     $possibleParameters = array("name", "title");
@@ -68,7 +64,7 @@ class LibraryAPI{
 
     $preparedCondition = BuildPreparedSQLCondition($sqlConditions);
 
-    $statement = $db->prepare($baseStatement . $preparedCondition);
+    $statement = $db->prepare($this->basicSelectStatement." WHERE " . $preparedCondition);
     $statement->execute($actualParameters);
     $books = array();
     while($row = $statement->fetch()){
