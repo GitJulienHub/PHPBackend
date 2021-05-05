@@ -50,8 +50,11 @@ class LibraryAPI{
       array_push($users, array(
         'id' => $output['id'],
         'title' => $output['title'],
+        'authorid' => $output['authorid'],
         'name' => $output['name'],
+        'shelfid' => $output['shelfid'],
         'shelfdescr' => $output['shelfdescr'],
+        'stateid' => $output['stateid'],
         'state' => $output['state'],
       ));
     }
@@ -73,10 +76,14 @@ class LibraryAPI{
 
     while($row = $statement->fetch()){
       array_push($books, array(
-        'title' => $row['title'],
-        'name' => $row['name'],
-        'shelfdescr' => $row['shelfdescr'],
-        'state' => $row['state'],
+        'id' => $output['id'],
+        'title' => $output['title'],
+        'authorid' => $output['authorid'],
+        'name' => $output['name'],
+        'shelfid' => $output['shelfid'],
+        'shelfdescr' => $output['shelfdescr'],
+        'stateid' => $output['stateid'],
+        'state' => $output['state'],
 
       ));
     }
