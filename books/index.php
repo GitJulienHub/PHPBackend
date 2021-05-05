@@ -70,14 +70,15 @@ class LibraryAPI{
     $statement = $db->prepare($this->basicSelectStatement." WHERE " . $preparedCondition);
     $statement->execute($actualParameters);
     $books = array();
+
     while($row = $statement->fetch()){
-      $books[$row['id']] = array(
+      array_push($books, array(
         'title' => $row['title'],
         'name' => $row['name'],
         'shelfdescr' => $row['shelfdescr'],
         'state' => $row['state'],
 
-      );
+      ));
     }
     return json_encode($books);
   }
