@@ -6,22 +6,29 @@ class ShelfCreateRoute{
 
   function CreateShelf(){
     // TODO: error checking
+    $parameterName = 'shelfdescr';
+
+    if(!isset($_POST[$parameterName]) || empty($_POST[$parameterName])){
+      // TODO: return error
+      return;
+
+    }
     $requiredParameters = array("shelfdescr");
     $db = new Connect;
 
-    $stmt = $db->prepare("INSERT INTO tb_shelf (shelfdescr) VALUES (?)");
-    $stmt->bind_param($_POST['shelfdescr']);
+    $statement = "INSERT INTO tb_shelf ($parameterName) VALUES (:$parameterName)";
+    $stmt = ($db->prepare($statement));
+    $stmt->bindParam($parameterName,$_POST[$parameterName], PDO::PARAM_STR);
     $stmt->execute();
-    $stmt->close();
-    $db->close();
+
+    //TODO check for errors, send code
   }
 }
 
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $API = new BookCreateRoute;
-  $API->CreateBook();
+
+  $API = new ShelfCreateRoute;
+  $API->CreateShelf();
 }
 
  ?>

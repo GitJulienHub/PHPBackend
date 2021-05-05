@@ -6,21 +6,29 @@ class AuthorCreateRoute{
 
   function CreateAuthor(){
     // TODO: error checking
+    $parameterName = 'name';
+
+    if(!isset($_POST[$parameterName]) || empty($_POST[$parameterName])){
+      // TODO: return error
+      return;
+
+    }
     $requiredParameters = array("name");
     $db = new Connect;
 
-    $stmt = $db->prepare("INSERT INTO tb_authors (name) VALUES (?)");
-    $stmt->bind_param($_POST['name']);
+    $statement = "INSERT INTO tb_authors ($parameterName) VALUES (:$parameterName)";;
+    $stmt = ($db->prepare($statement));
+    $stmt->bindParam($parameterName,$_POST[$parameterName], PDO::PARAM_STR);
     $stmt->execute();
-    $stmt->close();
-    $db->close();
+
+    //TODO check for errors, send code
   }
 }
 
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $API = new BookCreateRoute;
+  $API = new AuthorCreateRoute;
   $API->CreateAuthor();
 }
 

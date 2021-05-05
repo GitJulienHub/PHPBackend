@@ -4,16 +4,53 @@ require_once __DIR__ . '../../../connectdb.php';
 
 class BookCreateRoute{
 
+  function sqlInsert($db, $table, $params){
+    if(!isset($params) || empty($params)){
+      return;
+    }
+    $statement = "insert into $table (";
+    $colNames = "";
+    $valNames = "";
+    foreach ($params as $key => $value) {
+        $colNames = $colNames . $key . ',';
+        $valNames = $valNames . ":". $key . ', ';
+    }
+    $colNames = substr($colNames, 0, strlen($colNames)-1);
+    $valNames = substr($valNames, 0, strlen($valNames)-2);
+
+    $statement = $statement . $colNames . ") VALUES (". $valNames . ")";
+    echo $statement;
+    $stmt = ($db->prepare($statement));
+
+    foreach ($params as $key => $value) {
+      $pdoType = null;
+      switch(gettype($value)){
+        case "string":
+          $pdoType = PDO::PARAM_STR;
+          break;
+        case "int":
+          $pdoType = PDO::PARAM_INT;
+          break;
+        default:
+      }
+      if($pdoType == null){
+        continue;
+      }
+      $stmt->bindParam($key,$value, $pdoType);
+
+    }
+    $stmt->execute();
+  }
+
   function CreateBook(){
     // TODO: error checking
-    $requiredParameters = array("title", "shelfid","stateid","authorid");
     $db = new Connect;
-
-    $stmt = $db->prepare("INSERT INTO tb_books (title, shelfid, stateid, authorid) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param($_POST['title'], $_POST['shelfid'], $_POST['stateid'], $_POST['authorid']);
-    $stmt->execute();
-    $stmt->close();
-    $db->close();
+    $requiredParameters = array("title", "shelfid","stateid","authorid");
+    $params = array();
+    foreach ($requiredParameters as $value) {
+        $params[$value] = $_POST[$value];
+    }
+    $this->sqlInsert($db, "tb_books", $params);
   }
 }
 
