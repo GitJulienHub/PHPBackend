@@ -40,7 +40,10 @@ class LibraryAPI{
     $data = $db->prepare('select * from tb_books');
     $data->execute();
     while($output = $data->fetch(PDO::FETCH_ASSOC)){
-      $users[$output['id']] = $output['id'];
+      array_push($users, array(
+        'id' => $output['id'],
+        'title' => $output['title']
+      ));
     }
     return json_encode($users);
   }
@@ -84,6 +87,7 @@ class LibraryAPI{
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
   $API = new LibraryAPI;
+  header("Access-Control-Allow-Origin: http://localhost:3000");
   header('Content-Type: application/json');
 
   if(count($_GET)==0){
