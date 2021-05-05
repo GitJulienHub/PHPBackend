@@ -74,7 +74,7 @@ class LibraryAPI{
     $statement->execute($actualParameters);
     $books = array();
 
-    while($row = $statement->fetch()){
+    while($output = $statement->fetch()){
       array_push($books, array(
         'id' => $output['id'],
         'title' => $output['title'],
